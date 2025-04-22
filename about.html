@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DoseCalc</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="splash.css" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    .calc-section { background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .result { margin-top: 10px; font-weight: bold; color: green; white-space: pre-line; }
+    .formula { font-style: italic; margin-top: 5px; color: #555; }
+    input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; }
+    button { background: #0d47a1; color: white; border: none; cursor: pointer; }
+    .clear-btn { background: #d32f2f; margin-top: 5px; }
+
+    nav {
+      background: #0d47a1;
+      padding: 1em;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      margin: 1em;
+      text-decoration: none;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      color: white;
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #0d47a1;
+      }
+      nav.responsive .nav-links {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="learn.html">Learn Calculations</a>
+      <a href="about.html">About the Author</a>
+    </div>
+  </nav>
+
+  <h1>About the Author</h1>
+  <div class="bio">
+    <p><strong>Chika Asogwa</strong> is a Health Informatics trainee with the NHS. His passion for creating DoseCalc comes from his journey through healthcare, tech, and compassion for students navigating the clinical environment.</p>
+    <p>He believes every nursing student should have simple, mobile access to essential calculations – especially during placement stress or exam crunch.</p>
+    <p>This tool was built to empower learning, reduce mistakes, and build confidence in real-life care scenarios.</p>
+  </div>
+  
+  <footer style="background:#f2f2f2;padding:1em;text-align:center;margin-top:2em;">
+    <p>Built by Chika Asogwa for every nursing student</p>
+  </footer>
+</body>
+</html>
+
+
+<script>
+  function toggleMenu() {
+    document.querySelector("nav").classList.toggle("responsive");
+  }
+</script>
+
+</body>
+</html>

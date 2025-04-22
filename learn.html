@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DoseCalc</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="splash.css" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    .persona, .scenario { background: #fff; padding: 1em; margin: 1em 0; border-left: 4px solid #0d47a1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 5px; }
+    .calc-section { background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .result { margin-top: 10px; font-weight: bold; color: green; white-space: pre-line; }
+    .formula { font-style: italic; margin-top: 5px; color: #555; }
+    input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; }
+    button { background: #0d47a1; color: white; border: none; cursor: pointer; }
+    .clear-btn { background: #d32f2f; margin-top: 5px; }
+
+    nav {
+      background: #0d47a1;
+      padding: 1em;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      margin: 1em;
+      text-decoration: none;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      color: white;
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #0d47a1;
+      }
+      nav.responsive .nav-links {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="learn.html">Learn Calculations</a>
+      <a href="about.html">About the Author</a>
+    </div>
+  </nav>
+
+<h1>Learn Drug Calculations</h1>
+
+<!-- BEGIN: Drug Calculation Explanations -->
+
+
+<h2>1. Basic Dose Calculation</h2>
+<div class="persona"><strong>Persona:</strong> Aisha, a 2nd-year nursing student on placement in A&E.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Aisha is asked to administer 250mg of paracetamol. Available stock is 500mg tablets.<br>
+  <strong>Formula:</strong> (Want / Have) × Volume = (250 / 500) × 1 = <strong>0.5 tablets</strong><br>
+  <strong>Explanation:</strong> You want 250mg, and you have 500mg tablets. Divide what you want by what you have and multiply by the volume per tablet (usually 1 tablet). Administer 0.5 tablets.
+</div>
+
+<h2>2. IV Infusion Rate</h2>
+<div class="persona"><strong>Persona:</strong> Jack, a newly qualified nurse in ICU.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> A 500mL saline bag must run over 5 hours.<br>
+  <strong>Formula:</strong> Volume ÷ Time = 500 ÷ 5 = <strong>100 mL/hr</strong><br>
+  <strong>Explanation:</strong> Divide total volume by number of hours to get rate per hour.
+</div>
+
+<h2>3. Drops per Minute</h2>
+<div class="persona"><strong>Persona:</strong> Leah, a paediatric nurse using a manual IV drip.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Give 100mL in 30 minutes with a 20 drops/mL set.<br>
+  <strong>Formula:</strong> (Volume × Drop Factor) ÷ Time = (100 × 20) ÷ 30 = <strong>67 drops/min</strong><br>
+  <strong>Explanation:</strong> Multiply volume by drop factor and divide by time in minutes.
+</div>
+
+<h2>4. Weight-Based Dose</h2>
+<div class="persona"><strong>Persona:</strong> Joe, a pharmacist checking doses for a child.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Child weighs 20kg, drug prescribed at 10mg/kg.<br>
+  <strong>Formula:</strong> Weight × Dose/kg = 20 × 10 = <strong>200 mg</strong><br>
+  <strong>Explanation:</strong> Multiply weight by prescribed dose per kilogram.
+</div>
+
+<h2>5. Clark’s Rule</h2>
+<div class="persona"><strong>Persona:</strong> Diana, a community nurse administering a paediatric dose.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Adult dose is 300mg. Child weighs 50 lbs.<br>
+  <strong>Formula:</strong> (Weight in lbs / 150) × Adult dose = (50 / 150) × 300 = <strong>100 mg</strong><br>
+  <strong>Explanation:</strong> A formula for approximating children’s doses from adult doses.
+</div>
+
+<h2>6. BSA-Based Dose</h2>
+<div class="persona"><strong>Persona:</strong> Dr. Patel, a paediatric oncologist.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> BSA = 0.9 m², Adult dose = 400mg.<br>
+  <strong>Formula:</strong> (BSA / 1.73) × Adult dose = (0.9 / 1.73) × 400 = <strong>208 mg</strong><br>
+  <strong>Explanation:</strong> Used especially for chemo and paediatric meds. Normal adult BSA = 1.73 m².
+</div>
+
+<h2>7. Percent Solution</h2>
+<div class="persona"><strong>Persona:</strong> Emily, preparing a lidocaine solution.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> 2% solution, 10mL needed.<br>
+  <strong>Formula:</strong> % × 10 × Volume = 2 × 10 × 10 = <strong>200 mg</strong><br>
+  <strong>Explanation:</strong> 1% = 10mg/mL. Multiply concentration by volume.
+</div>
+
+<h2>8. Insulin Dose</h2>
+<div class="persona"><strong>Persona:</strong> Paul, a diabetic patient.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Meal has 90g carbs, ratio is 1 unit per 15g carbs.<br>
+  <strong>Formula:</strong> Carbs / Ratio = 90 / 15 = <strong>6 units</strong><br>
+  <strong>Explanation:</strong> Divide total carbs by your carb ratio.
+</div>
+
+<h2>9. Reconstitution Dose</h2>
+<div class="persona"><strong>Persona:</strong> Sarah, reconstituting antibiotics.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Prescribed 250mg, stock is 125mg/mL.<br>
+  <strong>Formula:</strong> Dose / Concentration = 250 / 125 = <strong>2 mL</strong><br>
+  <strong>Explanation:</strong> Divide dose needed by concentration per mL.
+</div>
+
+<h2>10. Heparin Infusion</h2>
+<div class="persona"><strong>Persona:</strong> Mohammed, cardiac nurse in CCU.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> 70kg patient, 18 units/kg/hr, 100 units/mL.<br>
+  <strong>Formula:</strong> (70 × 18) / 100 = <strong>12.6 mL/hr</strong><br>
+  <strong>Explanation:</strong> Multiply weight by dose per kg, divide by drug concentration.
+</div>
+
+<h2>11. Titration Dosing</h2>
+<div class="persona"><strong>Persona:</strong> Helen, ICU nurse titrating sedatives.</div>
+<div class="scenario">
+  <strong>Scenario:</strong> Start at 2mL/hr, increase by 1mL/hr every 15 min until 6mL/hr.<br>
+  <strong>Steps:</strong><br>
+  - 0 min: 2 mL/hr<br>
+  - 15 min: 3 mL/hr<br>
+  - 30 min: 4 mL/hr<br>
+  - 45 min: 5 mL/hr<br>
+  - 60 min: 6 mL/hr<br>
+  <strong>Explanation:</strong> Titration increases the dose in steps at time intervals.
+</div>
+
+
+<footer style="background:#f2f2f2;padding:1em;text-align:center;margin-top:2em;">
+  <p>Built by Chika Asogwa for every nursing student</p>
+</footer>
+</body>
+</html>
+
+
+<script>
+function toggleMenu() {
+  document.querySelector("nav").classList.toggle("responsive");
+}
+</script>
+
+</body>
+</html>
