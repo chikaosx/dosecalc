@@ -1,3 +1,4 @@
+<!-- Enhanced DoseCalc HTML: Dropdown-controlled single calculator view -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,60 +9,26 @@
   <link rel="stylesheet" href="splash.css" />
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
-    .calc-section { background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .calc-section { background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 600px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: none; }
     .result { margin-top: 10px; font-weight: bold; color: green; white-space: pre-line; }
     .formula { font-style: italic; margin-top: 5px; color: #555; }
-    input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; }
+    input, button, select { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; }
     button { background: #0d47a1; color: white; border: none; cursor: pointer; }
     .clear-btn { background: #d32f2f; margin-top: 5px; }
 
-    nav {
-      background: #0d47a1;
-      padding: 1em;
-      text-align: center;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: white;
-      margin: 1em;
-      text-decoration: none;
-    }
-    .menu-toggle {
-      display: none;
-      font-size: 1.5em;
-      color: white;
-      cursor: pointer;
-    }
-    .nav-links {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
+    nav { background: #0d47a1; padding: 1em; text-align: center; display: flex; justify-content: space-between; flex-wrap: wrap; }
+    nav a { color: white; margin: 1em; text-decoration: none; }
+    .menu-toggle { display: none; font-size: 1.5em; color: white; cursor: pointer; }
+    .nav-links { display: flex; justify-content: center; flex-wrap: wrap; }
     @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background: #0d47a1;
-      }
-      nav.responsive .nav-links {
-        display: flex;
-      }
-      .menu-toggle {
-        display: block;
-      }
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; flex-direction: column; width: 100%; background: #0d47a1; }
+      nav.responsive .nav-links { display: flex; }
+      .menu-toggle { display: block; }
     }
   </style>
 </head>
 <body>
-
   <nav class="nav-bar">
     <span class="menu-toggle" onclick="toggleMenu()">☰</span>
     <div class="nav-links">
@@ -73,100 +40,105 @@
 
   <h1>SafeMed - Drug Calculators</h1>
 
-<div class="calc-section">
-  <h3>1. Basic Dose</h3>
-  <p class="formula">(Want / Have) × Volume</p>
-  <input type="number" id="bd_want" placeholder="What you want (mg)">
-<input type="number" id="bd_have" placeholder="What you have (mg)">
-<input type="number" id="bd_vol" placeholder="Volume (mL)">
-  <button onclick="calcBasic()">Calculate</button>
-  <div class="result" id="bd_result"></div>
-  <button onclick="document.getElementById('bd_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
+  <select id="calculator-select" onchange="showCalculator()">
+    <option value="bd">Basic Dose</option>
+    <option value="iv">IV Infusion Rate</option>
+    <option value="dr">Drops per Minute</option>
+    <option value="wt">Weight-Based Dose</option>
+    <option value="clark">Clark's Rule</option>
+    <option value="bsa">BSA-Based Dose</option>
+    <option value="perc">Percent Solution</option>
+    <option value="ins">Insulin Dose</option>
+    <option value="recon">Reconstitution Dose</option>
+    <option value="hep">Heparin Infusion</option>
+    <option value="tit">Titration Dosing</option>
+  </select>
 
-<div class="calc-section">
-  <h3>2. IV Infusion Rate</h3>
-  <p class="formula">Volume / Time</p>
-  <input type="number" id="iv_vol" placeholder="Total volume (mL)">
-<input type="number" id="iv_time" placeholder="Time (hours)">
-  <button onclick="calcIV()">Calculate</button>
-  <div class="result" id="iv_result"></div>
-  <button onclick="document.getElementById('iv_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>3. Drops per Minute</h3>
-  <p class="formula">(Volume × Drop factor) / Time (minutes)</p>
-  <input type="number" id="dr_vol" placeholder="Volume (mL)">
-<input type="number" id="dr_df" placeholder="Drop factor">
-<input type="number" id="dr_time" placeholder="Time (minutes)">
-  <button onclick="calcDropRate()">Calculate</button>
-  <div class="result" id="dr_result"></div>
-  <button onclick="document.getElementById('dr_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>4. Weight-Based Dose</h3>
+  <div id="bd" class="calc-section">
+    <h3>Basic Dose</h3>
+    <p class="formula">(Want / Have) × Volume</p>
+    <input type="number" id="bd_want" placeholder="What you want (mg)">
+  <input type="number" id="bd_have" placeholder="What you have (mg)">
+  <input type="number" id="bd_vol" placeholder="Volume (mL)">
+    <button onclick="calcBasic()">Calculate</button>
+    <div class="result" id="bd_result"></div>
+    <button onclick="document.getElementById('bd_result').innerText = ''" class="clear-btn">Clear</button>
+  </div>
+  <div id="iv" class="calc-section">
+    <h3>IV Infusion Rate</h3>
+    <p class="formula">Volume / Time</p>
+    <input type="number" id="iv_vol" placeholder="Total volume (mL)">
+  <input type="number" id="iv_time" placeholder="Time (hours)">
+    <button onclick="calcIV()">Calculate</button>
+    <div class="result" id="iv_result"></div>
+    <button onclick="document.getElementById('iv_result').innerText = ''" class="clear-btn">Clear</button>
+  </div>
+  <div id="dr" class="calc-section">
+    <h3>Drops per Minute</h3>
+    <p class="formula">(Volume × Drop factor) / Time (minutes)</p>
+    <input type="number" id="dr_vol" placeholder="Volume (mL)">
+  <input type="number" id="dr_df" placeholder="Drop factor">
+  <input type="number" id="dr_time" placeholder="Time (minutes)">
+    <button onclick="calcDropRate()">Calculate</button>
+    <div class="result" id="dr_result"></div>
+    <button onclick="document.getElementById('dr_result').innerText = ''" class="clear-btn">Clear</button>
+  </div>
+  <div id="wt" class="calc-section">
+    <h3>Weight-Based Dose</h3>
   <p class="formula">Weight × Dose per kg</p>
   <input type="number" id="wt_weight" placeholder="Weight (kg)">
 <input type="number" id="wt_dose" placeholder="Dose per kg (mg)">
   <button onclick="calcWeightDose()">Calculate</button>
   <div class="result" id="wt_result"></div>
   <button onclick="document.getElementById('wt_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>5. Clark’s Rule</h3>
-  <p class="formula">(Weight in lbs / 150) × Adult dose</p>
-  <input type="number" id="clark_weight" placeholder="Weight (lbs)">
-<input type="number" id="clark_dose" placeholder="Adult dose (mg)">
-  <button onclick="calcClark()">Calculate</button>
-  <div class="result" id="clark_result"></div>
-  <button onclick="document.getElementById('clark_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>6. BSA-Based Dose</h3>
+  </div>
+  <div id="clark" class="calc-section">
+    <h3>Clark’s Rule</h3>
+    <p class="formula">(Weight in lbs / 150) × Adult dose</p>
+    <input type="number" id="clark_weight" placeholder="Weight (lbs)">
+  <input type="number" id="clark_dose" placeholder="Adult dose (mg)">
+    <button onclick="calcClark()">Calculate</button>
+    <div class="result" id="clark_result"></div>
+    <button onclick="document.getElementById('clark_result').innerText = ''" class="clear-btn">Clear</button>
+  </div>
+  <div id="bsa" class="calc-section">
+    <h3>BSA-Based Dose</h3>
   <p class="formula">(BSA / 1.73) × Adult dose</p>
   <input type="number" id="bsa_bsa" placeholder="BSA (m²)">
 <input type="number" id="bsa_dose" placeholder="Adult dose (mg)">
   <button onclick="calcBSA()">Calculate</button>
   <div class="result" id="bsa_result"></div>
   <button onclick="document.getElementById('bsa_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>7. Percent Solution</h3>
+  </div>
+  <div id="perc" class="calc-section">
+    <h3>Percent Solution</h3>
   <p class="formula">% × 10 × Volume</p>
   <input type="number" id="perc_percent" placeholder="Percent concentration (%)">
 <input type="number" id="perc_vol" placeholder="Volume (mL)">
   <button onclick="calcPercent()">Calculate</button>
   <div class="result" id="perc_result"></div>
   <button onclick="document.getElementById('perc_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>8. Insulin Dose</h3>
+  </div>
+  <div id="ins" class="calc-section">
+    <h3>Insulin Dose</h3>
   <p class="formula">Total carbs / Carb ratio</p>
   <input type="number" id="ins_carb" placeholder="Total carbs (g)">
 <input type="number" id="ins_ratio" placeholder="Carb ratio (g/unit)">
   <button onclick="calcInsulin()">Calculate</button>
   <div class="result" id="ins_result"></div>
   <button onclick="document.getElementById('ins_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>9. Reconstitution Dose</h3>
+  </div>
+  <div id="recon" class="calc-section">
+    <h3>Reconstitution Dose</h3>
   <p class="formula">Prescribed dose / Concentration</p>
   <input type="number" id="recon_dose" placeholder="Prescribed dose (mg)">
 <input type="number" id="recon_conc" placeholder="Concentration (mg/mL)">
   <button onclick="calcReconstitution()">Calculate</button>
   <div class="result" id="recon_result"></div>
   <button onclick="document.getElementById('recon_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>10. Heparin Infusion</h3>
+  </div>
+  <div id="hep" class="calc-section">
+    <h3>Heparin Infusion</h3>
   <p class="formula">(Weight × Dose per kg/hr) / Concentration</p>
   <input type="number" id="hep_weight" placeholder="Weight (kg)">
 <input type="number" id="hep_dose" placeholder="Dose (units/kg/hr)">
@@ -174,10 +146,9 @@
   <button onclick="calcHeparin()">Calculate</button>
   <div class="result" id="hep_result"></div>
   <button onclick="document.getElementById('hep_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
-
-<div class="calc-section">
-  <h3>11. Titration Dosing</h3>
+  </div>
+  <div id="tit" class="calc-section">
+    <h3>Titration Dosing</h3>
   <p class="formula">Start at base dose, increase until max</p>
   <input type="number" id="tit_base" placeholder="Starting dose (mL/hr)">
 <input type="number" id="tit_increment" placeholder="Increment (mL/hr)">
@@ -186,14 +157,26 @@
   <button onclick="calcTitration()">Calculate</button>
   <div class="result" id="tit_result"></div>
   <button onclick="document.getElementById('tit_result').innerText = ''" class="clear-btn">Clear</button>
-</div>
+  </div>
 
+  <footer style="background:#f2f2f2;padding:1em;text-align:center;margin-top:2em;">
+    <p>Built by Chika Asogwa for every nursing student</p>
+  </footer>
 
-<footer style="background:#f2f2f2;padding:1em;text-align:center;margin-top:2em;">
-  <p>Built by Chika Asogwa for every nursing student</p>
-</footer>
+  <script>
+    function showCalculator() {
+      document.querySelectorAll('.calc-section').forEach(div => div.style.display = 'none');
+      const selected = document.getElementById('calculator-select').value;
+      document.getElementById(selected).style.display = 'block';
+    }
+    window.onload = showCalculator;
+    function toggleMenu() {
+      document.querySelector("nav").classList.toggle("responsive");
+    }
+  </script>
 
-  <!-- JS Logic -->
+  <!-- Include your existing calculator JS functions here -->
+     <!-- JS Logic -->
   <script>
     function getVal(id) {
       return parseFloat(document.getElementById(id).value);
